@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
 import ResetButton from "./ResetButton";
+import ToggleHighlightButton from "./ToggleHighlightButton";
+
 import "./Scorecard.css";
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 }; // Max possible values for 1-6
@@ -90,14 +92,14 @@ const Scorecard = () => {
                                                 type="number"
                                                 value={value}
                                                 onChange={(e) => handleChange(e, category, col)}
-                                                className="no-arrows"
+                                                className="no-border-input"
                                             />
                                         ) : (
                                             <input
                                                 type="number"
                                                 value={value}
                                                 onChange={(e) => handleChange(e, category, col)}
-                                                className="no-arrows"
+                                                className="no-border-input"
                                             />
                                         )}
                                     </td>
@@ -107,7 +109,11 @@ const Scorecard = () => {
                     ))}
                 </tbody>
             </table>
-            <ResetButton setScores={setScores} />
+            <div className="buttons-container">
+                <ToggleHighlightButton />
+                <ResetButton setScores={setScores} />
+            </div>
+
         </div>
     );
 };
