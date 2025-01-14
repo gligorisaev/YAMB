@@ -55,7 +55,7 @@ const ToggleHighlightButton = ({ scores, setScores }) => {
 
     return (
         <button onClick={toggleHighlight} className="toggle-button">
-            ADD STAR
+            Add Star
         </button>
     );
 };

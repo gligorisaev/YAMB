@@ -72,7 +72,7 @@ const Scorecard = () => {
                             <td><strong>{category}</strong></td>
                             {columns.map((col, colIndex) => {
                                 const value = scores[category]?.[col] || "";
-                                const isMax = MAX_VALUES[category] && value == MAX_VALUES[category];
+                                const isMax = MAX_VALUES[category] && value === MAX_VALUES[category];
                                 const isZero = value === "0";
 
                                 return (
