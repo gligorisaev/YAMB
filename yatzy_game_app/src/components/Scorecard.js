@@ -68,35 +68,41 @@ const Scorecard = () => {
                     {categories.map((category, rowIndex) => (
                         <tr key={rowIndex}>
                             <td><strong>{category}</strong></td>
-                            {columns.map((col, colIndex) => (
-                                <td key={colIndex} className={MAX_VALUES[category] && scores[category]?.[col] == MAX_VALUES[category] ? "highlight-max" : ""}>
-                                    {category === "SUM (1-6)" ? (
-                                        <span>{sum1to6[col]}</span>
-                                    ) : category === "SUM (MAX-MIN)" ? (
-                                        <span>{sumMaxMin[col]}</span>
-                                    ) : category === "SUM (T20-Y60)" ? (
-                                        <span>{sumT20Y60[col]}</span>
-                                    ) : category === "GRAND TOTAL" && col === "R" ? (
-                                        <span><strong>{grandTotalR}</strong></span>
-                                    ) : category.includes("SUM") || category === "GRAND TOTAL" ? (
-                                        <span>-</span> // Make SUM fields non-editable
-                                    ) : col === "R" ? (
-                                        <input
-                                            type="number"
-                                            value={scores[category]?.[col] || ""}
-                                            onChange={(e) => handleChange(e, category, col)}
-                                            className="no-arrows"
-                                        />
-                                    ) : (
-                                        <input
-                                            type="number"
-                                            value={scores[category]?.[col] || ""}
-                                            onChange={(e) => handleChange(e, category, col)}
-                                            className="no-arrows"
-                                        />
-                                    )}
-                                </td>
-                            ))}
+                            {columns.map((col, colIndex) => {
+                                const value = scores[category]?.[col] || "";
+                                const isMax = MAX_VALUES[category] && value == MAX_VALUES[category];
+                                const isZero = value === "0";
+
+                                return (
+                                    <td key={colIndex} className={`${isMax ? "highlight-max" : ""} ${isZero ? "highlight-zero" : ""}`}>
+                                        {category === "SUM (1-6)" ? (
+                                            <span>{sum1to6[col]}</span>
+                                        ) : category === "SUM (MAX-MIN)" ? (
+                                            <span>{sumMaxMin[col]}</span>
+                                        ) : category === "SUM (T20-Y60)" ? (
+                                            <span>{sumT20Y60[col]}</span>
+                                        ) : category === "GRAND TOTAL" && col === "R" ? (
+                                            <span><strong>{grandTotalR}</strong></span>
+                                        ) : category.includes("SUM") || category === "GRAND TOTAL" ? (
+                                            <span>-</span> // Make SUM fields non-editable
+                                        ) : col === "R" ? (
+                                            <input
+                                                type="number"
+                                                value={value}
+                                                onChange={(e) => handleChange(e, category, col)}
+                                                className="no-arrows"
+                                            />
+                                        ) : (
+                                            <input
+                                                type="number"
+                                                value={value}
+                                                onChange={(e) => handleChange(e, category, col)}
+                                                className="no-arrows"
+                                            />
+                                        )}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>

@@ -55,3 +55,9 @@ input.no-arrows::-webkit-inner-spin-button {
     color: white;
     font-weight: bold;
 }
+
+.highlight-zero {
+    background-color: red !important;
+    color: white;
+    font-weight: bold;
+}
