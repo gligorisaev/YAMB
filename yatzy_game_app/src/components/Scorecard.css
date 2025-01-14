@@ -1,0 +1,57 @@
+.scorecard {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+input {
+    width: 50px;
+    text-align: center;
+    font-size: 1rem;
+    -moz-appearance: textfield; /* Remove arrows in Firefox */
+}
+
+input.no-arrows::-webkit-outer-spin-button,
+input.no-arrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Remove arrows in Chrome, Safari, Edge */
+}
+
+.no-edit {
+    background-color: #f4f4f4;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .scorecard {
+        max-width: 95%;
+    }
+
+    input {
+        width: 40px;
+        font-size: 0.9rem;
+    }
+}
+
+.highlight-max {
+    background-color: orange !important;
+    color: white;
+    font-weight: bold;
+}
