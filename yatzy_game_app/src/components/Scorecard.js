@@ -110,7 +110,7 @@ const Scorecard = () => {
                 </tbody>
             </table>
             <div className="buttons-container">
-                <ToggleHighlightButton />
+                <ToggleHighlightButton scores={scores} setScores={setScores} />
                 <ResetButton setScores={setScores} />
             </div>
 
