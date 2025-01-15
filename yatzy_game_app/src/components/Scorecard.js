@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
-import ResetButton from "./ResetButton";
+// import ResetButton from "./ResetButton";
 
 import "./Scorecard.css";
 
@@ -97,7 +97,7 @@ const Scorecard = () => {
                                 const value = scores[category]?.[col] || "";
                                 const isMax = MAX_VALUES[category] && parseInt(value) === MAX_VALUES[category];
                                 const isZero = value === "0";
-                                const key = `${category}-${col}`;
+                                // const key = `${category}-${col}`;
                                 const isHighlighted = scores[category]?.[`${col}_highlighted`]; // ✅ Uses state from Zvezda button
 
                                 return (
