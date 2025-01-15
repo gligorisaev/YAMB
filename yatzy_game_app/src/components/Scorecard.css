@@ -69,10 +69,10 @@ th, td {
 /* Fixing Button Alignment - Aligning to Top */
 .buttons-container {
     display: flex;
-    justify-content: center; /* ✅ Keeps buttons aligned properly */
-    align-items: center; /* ✅ Aligns buttons to the center */
-    gap: 1px;
-    margin-top: 2px;
+    justify-content: space-between; /* ✅ Keeps buttons aligned properly */
+    align-items: flex-start; /* ✅ Aligns buttons to the top */
+    gap: 5px;
+    margin-top: 8px;
     width: 100%;
 }
 
