@@ -4,7 +4,7 @@ import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
 import "./Scorecard.css";
 
-const socket = io("http://your-server-ip:3000"); // 🔗 Replace with your actual server IP
+const socket = io("http://217.160.212.171", { transports: ["websocket"], withCredentials: true });
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
