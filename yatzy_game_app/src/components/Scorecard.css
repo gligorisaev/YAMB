@@ -1,7 +1,7 @@
 /* General Table Styling */
 .scorecard {
     width: 100%;
-    max-width: 400px;
+    max-width: 280px; /* ✅ Reduced width further */
     margin: auto;
     text-align: center;
     font-family: Arial, sans-serif;
@@ -10,57 +10,28 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 th, td {
     border: 1px solid #ddd;
-    padding: 5px;
+    padding: 3px; /* ✅ Keeping height unchanged */
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.75rem; /* ✅ Keeping readable text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 20px; /* ✅ Further reduced width */
 }
 
-/* Column width limited to fit 4 digits */
-td, th {
-    width: 50px;
-}
-
-/* Small input field */
-.small-field {
-    width: 100%;
-    max-width: 50px;
-    height: 30px;
-    text-align: center;
-    font-size: 1rem;
-}
-
-/* Remove Borders & Background for Input Fields */
+/* Fix Input Field Width and Remove Up/Down Arrows */
 .no-border-input {
     border: none;
     background: none;
-    width: 100%;
+    width: 20px; /* ✅ Reduced width */
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.75rem;
     outline: none;
-}
-
-/* SUM and GT labels styling */
-.sum-field {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-/* Highlighting Maximum Values */
-.highlight-max {
-    background-color: orange !important;
-    color: white;
-    font-weight: bold;
-}
-
-/* Highlighting Zero Values */
-.highlight-zero {
-    background-color: red !important;
-    color: white;
-    font-weight: bold;
 }
 
 /* Remove Increment/Decrement Arrows on Number Inputs */
@@ -74,26 +45,79 @@ td, th {
     -moz-appearance: textfield; /* Firefox */
 }
 
-/* Buttons container */
-.buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+/* Highlighting for Maximum Values */
+.highlight-max {
+    background-color: orange !important;
+    color: white;
+    font-weight: bold;
 }
 
-/* Style for the ADD STAR button */
-.toggle-button {
-    padding: 10px 15px;
-    background-color: #007bff;
+/* Highlighting for Zero Values */
+.highlight-zero {
+    background-color: red !important;
     color: white;
+    font-weight: bold;
+}
+
+/* Toggle Highlight Effect */
+.highlight-toggle {
+    background-color: orange !important;
+    color: white;
+    font-weight: bold;
+}
+
+/* Fixing Button Alignment - Aligning to Top */
+.buttons-container {
+    display: flex;
+    justify-content: center; /* ✅ Keeps buttons aligned properly */
+    align-items: center; /* ✅ Aligns buttons to the center */
+    gap: 1px;
+    margin-top: 2px;
+    width: 100%;
+}
+
+/* Ensuring Buttons Stay Same Size */
+.toggle-button, .reset-button {
+    flex: 1;
+    max-width: 130px; /* ✅ Fixed button width */
+    padding: 8px 0;
+    font-size: 0.9rem;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
     border-radius: 5px;
     transition: background 0.3s ease;
+    text-align: center;
+    height: 40px; /* ✅ Ensuring equal height */
+}
+
+/* Zvezda Button */
+.toggle-button {
+    background-color: orange;
+    color: white;
 }
 
 .toggle-button:hover {
-    background-color: #0056b3;
+    background-color: #e69500;
+}
+
+/* Reset Button */
+.reset-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.reset-button:hover {
+    background-color: #b22234;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .scorecard {
+        max-width: 95%;
+    }
+
+    input {
+        width: 18px; /* ✅ Further reduced width */
+        font-size: 0.7rem;
+    }
 }

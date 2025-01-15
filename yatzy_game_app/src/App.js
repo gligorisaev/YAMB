@@ -4,7 +4,7 @@ import Scorecard from "./components/Scorecard";
 function App() {
     return (
         <div className="App">
-            <h1>Yatzy Game</h1>
+            <h1>YAMB</h1>
             <Scorecard />
         </div>
     );
