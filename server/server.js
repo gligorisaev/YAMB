@@ -14,9 +14,16 @@ const io = new Server(server, {
 
 // ✅ Fix Content Security Policy (CSP) issue
 app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src *; connect-src * ws: wss:;");
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; connect-src 'self' ws://217.160.212.171:3000 ws://* wss://*;"
+    );
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     next();
 });
+
 
 let gameState = { scores: {} };
 
