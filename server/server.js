@@ -7,48 +7,36 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*", // Allow all origins (can be restricted later)
+        origin: "*",  // ✅ Allows connections from any origin
         methods: ["GET", "POST"]
     }
 });
 
-let gameState = {
-    players: ["Gigo", "Sonja", "Zane", "Risto"],
-    scores: {} // Stores all player scores
-};
+// ✅ Fix Content Security Policy (CSP) issue
+app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", "default-src *; connect-src * ws: wss:;");
+    next();
+});
 
-// Handle new WebSocket connections
+let gameState = { scores: {} };
+
 io.on("connection", (socket) => {
-    console.log("A player connected:", socket.id);
-
-    // Send the current game state to the new player
+    console.log("✅ Player connected:", socket.id);
     socket.emit("gameState", gameState);
 
-    // Listen for score updates
     socket.on("updateScore", ({ player, category, col, value }) => {
-        if (!gameState.scores[player]) {
-            gameState.scores[player] = {};
-        }
-        if (!gameState.scores[player][category]) {
-            gameState.scores[player][category] = {};
-        }
+        if (!gameState.scores[player]) gameState.scores[player] = {};
+        if (!gameState.scores[player][category]) gameState.scores[player][category] = {};
         gameState.scores[player][category][col] = value;
 
-        // Broadcast updated scores to all players
-        io.emit("gameState", gameState);
-    });
-
-    // Reset game
-    socket.on("resetGame", () => {
-        gameState.scores = {};
         io.emit("gameState", gameState);
     });
 
     socket.on("disconnect", () => {
-        console.log("Player disconnected:", socket.id);
+        console.log("❌ Player disconnected:", socket.id);
     });
 });
 
-server.listen(3000, () => {
-    console.log("Server running on port 3000");
+server.listen(3000, "0.0.0.0", () => {
+    console.log("✅ WebSocket server running on port 3000 and accessible externally!");
 });
