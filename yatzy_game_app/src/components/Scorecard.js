@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
 import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
 import "./Scorecard.css";
+
+const socket = io("http://your-server-ip:3000"); // 🔗 Replace with your actual server IP
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
@@ -10,6 +13,21 @@ const Scorecard = ({ player, isEditable }) => {
     const [highlightedCell, setHighlightedCell] = useState(null);
 
     const columns = ["↓", "↓↑", "↑", "N", "O", "R"];
+
+    // 🔄 Load stored scores from the server when component mounts
+    useEffect(() => {
+        socket.emit("joinGame", player);
+
+        socket.on("gameState", (gameState) => {
+            if (gameState.scores[player]) {
+                setScores(gameState.scores[player]);
+            }
+        });
+
+        return () => {
+            socket.off("gameState");
+        };
+    }, [player]);
 
     useEffect(() => {
         saveScores(player, scores);
@@ -35,20 +53,26 @@ const Scorecard = ({ player, isEditable }) => {
         .reduce((acc, val) => acc + val, 0) + sum1to6["R"] + sumMaxMin["R"] + sumT20Y60["R"];
 
     const handleChange = (event, category, col) => {
-        if (!isEditable) return; // Prevent editing if not active player
-        setScores({
+        if (!isEditable) return;
+        const value = event.target.value;
+
+        const newScores = {
             ...scores,
             [category]: {
                 ...scores[category],
-                [col]: event.target.value,
+                [col]: value,
             },
-        });
+        };
+
+        setScores(newScores);
+        socket.emit("updateScore", { player, category, col, value });
     };
 
     const handleReset = () => {
         if (window.confirm(`Reset all scores for ${player}?`)) {
             setScores({});
             setHighlightedCell(null);
+            socket.emit("resetGame", player);
         }
     };
 
@@ -95,7 +119,6 @@ const Scorecard = ({ player, isEditable }) => {
                                 const value = scores[category]?.[col] || "";
                                 const isMax = MAX_VALUES[category] && parseInt(value) === MAX_VALUES[category];
                                 const isZero = value === "0";
-                                const key = `${category}-${col}`;
                                 const isHighlighted = scores[category]?.[`${col}_highlighted`];
 
                                 return (
