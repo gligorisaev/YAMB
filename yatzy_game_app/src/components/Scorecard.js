@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
-import ResetButton from "./ResetButton";
-
 import "./Scorecard.css";
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
-const Scorecard = () => {
-    const [scores, setScores] = useState(() => loadScores());
-    const [highlightedCell, setHighlightedCell] = useState(null); // Stores which field is selected for highlighting
+const Scorecard = ({ player, isEditable }) => {
+    const [scores, setScores] = useState(() => loadScores(player) || {});
+    const [highlightedCell, setHighlightedCell] = useState(null);
 
     const columns = ["↓", "↓↑", "↑", "N", "O", "R"];
 
     useEffect(() => {
-        saveScores(scores);
-    }, [scores]);
+        saveScores(player, scores);
+    }, [scores, player]);
 
     const sum1to6 = {};
     const sumMaxMin = {};
@@ -37,6 +35,7 @@ const Scorecard = () => {
         .reduce((acc, val) => acc + val, 0) + sum1to6["R"] + sumMaxMin["R"] + sumT20Y60["R"];
 
     const handleChange = (event, category, col) => {
+        if (!isEditable) return; // Prevent editing if not active player
         setScores({
             ...scores,
             [category]: {
@@ -47,18 +46,17 @@ const Scorecard = () => {
     };
 
     const handleReset = () => {
-        if (window.confirm("Are you sure you want to reset all scores?")) {
+        if (window.confirm(`Reset all scores for ${player}?`)) {
             setScores({});
             setHighlightedCell(null);
         }
     };
 
-    // ✅ Selecting a field (stores its ID)
     const selectField = (category, col) => {
+        if (!isEditable) return;
         setHighlightedCell(`${category}-${col}`);
     };
 
-    // ✅ Zvezda button toggles highlighting for the selected field
     const toggleHighlight = () => {
         if (highlightedCell) {
             const [category, col] = highlightedCell.split("-");
@@ -80,8 +78,8 @@ const Scorecard = () => {
     ];
 
     return (
-        <div className="scorecard">
-            <h2>Yatzy Scorecard</h2>
+        <div className={`scorecard ${isEditable ? "editable" : "readonly"}`}>
+            <h2>{player}</h2>
             <table>
                 <thead>
                     <tr>
@@ -98,12 +96,12 @@ const Scorecard = () => {
                                 const isMax = MAX_VALUES[category] && parseInt(value) === MAX_VALUES[category];
                                 const isZero = value === "0";
                                 const key = `${category}-${col}`;
-                                const isHighlighted = scores[category]?.[`${col}_highlighted`]; // ✅ Uses state from Zvezda button
+                                const isHighlighted = scores[category]?.[`${col}_highlighted`];
 
                                 return (
                                     <td key={colIndex} 
                                         className={`${isMax ? "highlight-max" : ""} ${isZero ? "highlight-zero" : ""} ${isHighlighted ? "highlight-toggle" : ""}`}
-                                        onClick={() => selectField(category, col)} // ✅ Clicking only selects the field
+                                        onClick={() => selectField(category, col)}
                                     >
                                         {category === "Σ(1-6)" ? (
                                             <span>{sum1to6[col]}</span>
@@ -121,6 +119,7 @@ const Scorecard = () => {
                                                 value={value}
                                                 onChange={(e) => handleChange(e, category, col)}
                                                 className="no-border-input"
+                                                disabled={!isEditable}
                                             />
                                         )}
                                     </td>
@@ -131,8 +130,8 @@ const Scorecard = () => {
                 </tbody>
             </table>
             <div className="buttons-container">
-                <button className="toggle-button" onClick={toggleHighlight}>Zvezda</button>
-                <button className="reset-button" onClick={handleReset}>Reset</button>
+                <button className="toggle-button" onClick={toggleHighlight} disabled={!isEditable}>Zvezda</button>
+                <button className="reset-button" onClick={handleReset} disabled={!isEditable}>Reset</button>
             </div>
         </div>
     );

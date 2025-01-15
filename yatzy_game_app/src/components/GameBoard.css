@@ -1,0 +1,72 @@
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+    gap: 15px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.scorecard {
+    border: 2px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.readonly {
+    opacity: 0.6;
+}
+
+.editable {
+    border-color: #ff9800;
+}
+
+h2 {
+    margin: 5px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+input {
+    width: 100%;
+    padding: 3px;
+    text-align: center;
+}
+
+.player-controls {
+    grid-column: span 2; /* Ensure controls span across both columns */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    background: #ff9800;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #e68900;
+}
+
+/* Responsive: Switch to 1-column layout for smaller screens */
+@media (max-width: 700px) {
+    .game-board {
+        grid-template-columns: 1fr;
+    }
+}
