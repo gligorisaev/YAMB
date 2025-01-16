@@ -1,37 +1,19 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
 import { saveScores, loadScores } from "../utils/localStorage";
 import { calculateSumWithBonus, calculateSumMaxMin, calculateSumWithoutBonus } from "../utils/calculateScores";
 import "./Scorecard.css";
 
-const socket = io("http://217.160.212.171", { transports: ["websocket"], withCredentials: true });
-
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
-const Scorecard = ({ player, isEditable }) => {
-    const [scores, setScores] = useState(() => loadScores(player) || {});
+const Scorecard = () => {
+    const [scores, setScores] = useState(() => loadScores() || {});
     const [highlightedCell, setHighlightedCell] = useState(null);
 
     const columns = ["↓", "↓↑", "↑", "N", "O", "R"];
 
-    // 🔄 Load stored scores from the server when component mounts
     useEffect(() => {
-        socket.emit("joinGame", player);
-
-        socket.on("gameState", (gameState) => {
-            if (gameState.scores[player]) {
-                setScores(gameState.scores[player]);
-            }
-        });
-
-        return () => {
-            socket.off("gameState");
-        };
-    }, [player]);
-
-    useEffect(() => {
-        saveScores(player, scores);
-    }, [scores, player]);
+        saveScores(scores);
+    }, [scores]);
 
     const sum1to6 = {};
     const sumMaxMin = {};
@@ -43,9 +25,16 @@ const Scorecard = ({ player, isEditable }) => {
         sumT20Y60[col] = calculateSumWithoutBonus(scores, ["T 20", "S 30", "F 40", "K 50", "Y 60"], col);
     });
 
-    sum1to6["R"] = sum1to6["↓"];
-    sumMaxMin["R"] = sumMaxMin["↓"];
-    sumT20Y60["R"] = sumT20Y60["↓"];
+    sum1to6["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sum1to6[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
+    sumMaxMin["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sumMaxMin[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
+    sumT20Y60["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sumT20Y60[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
+   
 
     const grandTotalR = Object.keys(scores)
         .filter(category => !category.includes("SUM") && category !== "Total")
@@ -53,31 +42,23 @@ const Scorecard = ({ player, isEditable }) => {
         .reduce((acc, val) => acc + val, 0) + sum1to6["R"] + sumMaxMin["R"] + sumT20Y60["R"];
 
     const handleChange = (event, category, col) => {
-        if (!isEditable) return;
-        const value = event.target.value;
-
-        const newScores = {
+        setScores({
             ...scores,
             [category]: {
                 ...scores[category],
-                [col]: value,
+                [col]: event.target.value,
             },
-        };
-
-        setScores(newScores);
-        socket.emit("updateScore", { player, category, col, value });
+        });
     };
 
     const handleReset = () => {
-        if (window.confirm(`Reset all scores for ${player}?`)) {
+        if (window.confirm("Are you sure you want to reset all scores?")) {
             setScores({});
             setHighlightedCell(null);
-            socket.emit("resetGame", player);
         }
     };
 
     const selectField = (category, col) => {
-        if (!isEditable) return;
         setHighlightedCell(`${category}-${col}`);
     };
 
@@ -102,8 +83,8 @@ const Scorecard = ({ player, isEditable }) => {
     ];
 
     return (
-        <div className={`scorecard ${isEditable ? "editable" : "readonly"}`}>
-            <h2>{player}</h2>
+        <div className="scorecard">
+            <h2>Yatzy Scorecard</h2>
             <table>
                 <thead>
                     <tr>
@@ -119,6 +100,7 @@ const Scorecard = ({ player, isEditable }) => {
                                 const value = scores[category]?.[col] || "";
                                 const isMax = MAX_VALUES[category] && parseInt(value) === MAX_VALUES[category];
                                 const isZero = value === "0";
+                                const key = `${category}-${col}`;
                                 const isHighlighted = scores[category]?.[`${col}_highlighted`];
 
                                 return (
@@ -142,7 +124,6 @@ const Scorecard = ({ player, isEditable }) => {
                                                 value={value}
                                                 onChange={(e) => handleChange(e, category, col)}
                                                 className="no-border-input"
-                                                disabled={!isEditable}
                                             />
                                         )}
                                     </td>
@@ -153,8 +134,8 @@ const Scorecard = ({ player, isEditable }) => {
                 </tbody>
             </table>
             <div className="buttons-container">
-                <button className="toggle-button" onClick={toggleHighlight} disabled={!isEditable}>Zvezda</button>
-                <button className="reset-button" onClick={handleReset} disabled={!isEditable}>Reset</button>
+                <button className="toggle-button" onClick={toggleHighlight}>Zvezda</button>
+                <button className="reset-button" onClick={handleReset}>Reset</button>
             </div>
         </div>
     );

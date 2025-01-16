@@ -1,12 +1,12 @@
 import React from "react";
-import GameBoard from "./components/GameBoard";
+import Scorecard from "./components/Scorecard";
 
 function App() {
-  return (
-    <div className="App">
-      <GameBoard />
-    </div>
-  );
+    return (
+        <div className="App">
+            <Scorecard />
+        </div>
+    );
 }
 
 export default App;
