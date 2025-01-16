@@ -2,55 +2,67 @@ import React, { useState } from "react";
 import Scorecard from "./components/Scorecard";
 
 const App = () => {
-    const [currentPlayer, setCurrentPlayer] = useState(null);
-    const [viewingPlayer, setViewingPlayer] = useState(null);
+  const players = ["Gigo", "Sonja", "Zane", "Riki"];
+  const [selectedPlayer, setSelectedPlayer] = useState(null); // The player playing the game
+  const [currentViewPlayer, setCurrentViewPlayer] = useState(null); // The scoreboard currently being viewed
 
-    const players = ["Gigo", "Sonja", "Zane", "Riki"];
+  const handlePlayerSelect = (player) => {
+    setSelectedPlayer(player);
+    setCurrentViewPlayer(player);
+  };
 
-    const handleSelectPlayer = (player) => {
-        setCurrentPlayer(player);
-        setViewingPlayer(player);
-    };
+  const handleViewOtherPlayer = (player) => {
+    setCurrentViewPlayer(player);
+  };
 
-    const handleViewPlayer = (player) => {
-        setViewingPlayer(player);
-    };
+  const handleBackToMyBoard = () => {
+    setCurrentViewPlayer(selectedPlayer);
+  };
 
-    const handleBackToMyCard = () => {
-        setViewingPlayer(currentPlayer);
-    };
-
-    if (!currentPlayer) {
-        return (
-            <div className="player-selection">
-                <h1>Select Your Player</h1>
-                {players.map((player) => (
-                    <button key={player} onClick={() => handleSelectPlayer(player)}>
-                        {player}
-                    </button>
-                ))}
-            </div>
-        );
-    }
-
-    return (
-        <div className="app">
-            <h1>YAMB</h1>
-            <Scorecard player={viewingPlayer} />
-            <div className="buttons-container">
-                <button onClick={handleBackToMyCard} disabled={viewingPlayer === currentPlayer}>
-                    Back to My Card
-                </button>
-                {players
-                    .filter((player) => player !== currentPlayer)
-                    .map((player) => (
-                        <button key={player} onClick={() => handleViewPlayer(player)}>
-                            View {player}
-                        </button>
-                    ))}
-            </div>
+  return (
+    <div className="app-container">
+      {!selectedPlayer ? (
+        <div className="player-selection">
+          <h1>Select Your Player</h1>
+          {players.map((player) => (
+            <button key={player} onClick={() => handlePlayerSelect(player)}>
+              {player}
+            </button>
+          ))}
         </div>
-    );
+      ) : (
+        <div className="scoreboard-container">
+          {players.map((player) => (
+            <div
+              key={player}
+              style={{ display: currentViewPlayer === player ? "block" : "none" }}
+            >
+              <Scorecard player={player} editable={selectedPlayer === player} />
+            </div>
+          ))}
+
+          {currentViewPlayer !== selectedPlayer && (
+            <button onClick={handleBackToMyBoard}>Back to My Scoreboard</button>
+          )}
+
+          <div className="view-other-buttons">
+            {players.map(
+              (player) =>
+                player !== currentViewPlayer && (
+                  <button
+                    key={player}
+                    onClick={() => handleViewOtherPlayer(player)}
+                    disabled={player === selectedPlayer}
+                  >
+                    View {player}'s Board
+                  </button>
+                )
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default App;

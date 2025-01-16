@@ -5,7 +5,7 @@ import "./Scorecard.css";
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
-const Scorecard = ({ player }) => {
+const Scorecard = ({ player, editable }) => {
     const [scores, setScores] = useState(() => loadScores(player) || {});
     const [highlightedCell, setHighlightedCell] = useState(null);
 
@@ -22,7 +22,16 @@ const Scorecard = ({ player }) => {
     columns.forEach(col => {
         sum1to6[col] = calculateSumWithBonus(scores, ["1", "2", "3", "4", "5", "6"], col);
         sumMaxMin[col] = calculateSumMaxMin(scores, col);
-        sumT20Y60[col] = calculateSumWithoutBonus(scores, ["T 20", "S 30", "F 40", "K 50", "Y 60"], col);
+    sumT20Y60[col] = calculateSumWithoutBonus(scores, ["T 20", "S 30", "F 40", "K 50", "Y 60"], col);
+        sum1to6["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sum1to6[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
+    sumMaxMin["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sumMaxMin[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
+    sumT20Y60["R"] = ["↓", "↓↑", "↑", "N", "O"]
+        .map(col => sumT20Y60[col] || 0) // Sum values from all columns except "R"
+        .reduce((acc, val) => acc + val, 0);
     });
 
     const grandTotalR = Object.keys(scores)
@@ -113,6 +122,7 @@ const Scorecard = ({ player }) => {
                                                 value={value}
                                                 onChange={(e) => handleChange(e, category, col)}
                                                 className="no-border-input"
+                                                disabled={!editable}
                                             />
                                         )}
                                     </td>

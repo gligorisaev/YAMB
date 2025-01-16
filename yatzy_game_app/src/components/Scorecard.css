@@ -121,3 +121,30 @@ th, td {
         font-size: 0.7rem;
     }
 }
+.app-container {
+    text-align: center;
+  }
+  
+  .player-selection button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .scoreboard-container {
+    margin-top: 20px;
+  }
+  
+  .view-other-buttons button {
+    margin: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
