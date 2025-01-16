@@ -5,15 +5,15 @@ import "./Scorecard.css";
 
 const MAX_VALUES = { "1": 5, "2": 10, "3": 15, "4": 20, "5": 25, "6": 30 };
 
-const Scorecard = () => {
-    const [scores, setScores] = useState(() => loadScores() || {});
+const Scorecard = ({ player }) => {
+    const [scores, setScores] = useState(() => loadScores(player) || {});
     const [highlightedCell, setHighlightedCell] = useState(null);
 
     const columns = ["↓", "↓↑", "↑", "N", "O", "R"];
 
     useEffect(() => {
-        saveScores(scores);
-    }, [scores]);
+        saveScores(player, scores);
+    }, [scores, player]);
 
     const sum1to6 = {};
     const sumMaxMin = {};
@@ -24,17 +24,6 @@ const Scorecard = () => {
         sumMaxMin[col] = calculateSumMaxMin(scores, col);
         sumT20Y60[col] = calculateSumWithoutBonus(scores, ["T 20", "S 30", "F 40", "K 50", "Y 60"], col);
     });
-
-    sum1to6["R"] = ["↓", "↓↑", "↑", "N", "O"]
-        .map(col => sum1to6[col] || 0) // Sum values from all columns except "R"
-        .reduce((acc, val) => acc + val, 0);
-    sumMaxMin["R"] = ["↓", "↓↑", "↑", "N", "O"]
-        .map(col => sumMaxMin[col] || 0) // Sum values from all columns except "R"
-        .reduce((acc, val) => acc + val, 0);
-    sumT20Y60["R"] = ["↓", "↓↑", "↑", "N", "O"]
-        .map(col => sumT20Y60[col] || 0) // Sum values from all columns except "R"
-        .reduce((acc, val) => acc + val, 0);
-   
 
     const grandTotalR = Object.keys(scores)
         .filter(category => !category.includes("SUM") && category !== "Total")
@@ -52,7 +41,7 @@ const Scorecard = () => {
     };
 
     const handleReset = () => {
-        if (window.confirm("Are you sure you want to reset all scores?")) {
+        if (window.confirm(`Are you sure you want to reset ${player}'s scores?`)) {
             setScores({});
             setHighlightedCell(null);
         }
@@ -84,7 +73,7 @@ const Scorecard = () => {
 
     return (
         <div className="scorecard">
-            <h2>Yatzy Scorecard</h2>
+            <h2>{player}'s Scorecard</h2>
             <table>
                 <thead>
                     <tr>
