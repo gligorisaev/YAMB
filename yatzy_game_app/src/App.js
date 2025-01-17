@@ -5,12 +5,6 @@ const App = () => {
   const players = ["Gigo", "Sonja", "Zane", "Riki"];
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [currentViewPlayer, setCurrentViewPlayer] = useState(null);
-  const [scores, setScores] = useState(
-    players.reduce((acc, player) => {
-      acc[player] = {}; // Initialize empty scores for each player
-      return acc;
-    }, {})
-  );
 
   const handlePlayerSelect = (player) => {
     setSelectedPlayer(player);
@@ -23,13 +17,6 @@ const App = () => {
 
   const handleBackToMyBoard = () => {
     setCurrentViewPlayer(selectedPlayer);
-  };
-
-  const updatePlayerScores = (player, newScores) => {
-    setScores((prevScores) => ({
-      ...prevScores,
-      [player]: newScores,
-    }));
   };
 
   return (
@@ -50,12 +37,7 @@ const App = () => {
               key={player}
               style={{ display: currentViewPlayer === player ? "block" : "none" }}
             >
-              <Scorecard
-                player={player}
-                scores={scores[player]}
-                updateScores={(newScores) => updatePlayerScores(player, newScores)}
-                editable={selectedPlayer === player}
-              />
+              <Scorecard player={player} editable={selectedPlayer === player} />
             </div>
           ))}
 
