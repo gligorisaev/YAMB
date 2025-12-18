@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/YAMB/static/css/main.730cc318.css",
+    "main.css": "/YAMB/static/css/main.d25f5dde.css",
     "main.js": "/YAMB/static/js/main.904999e8.js",
     "index.html": "/YAMB/index.html",
-    "main.730cc318.css.map": "/YAMB/static/css/main.730cc318.css.map",
+    "main.d25f5dde.css.map": "/YAMB/static/css/main.d25f5dde.css.map",
     "main.904999e8.js.map": "/YAMB/static/js/main.904999e8.js.map"
   },
   "entrypoints": [
-    "static/css/main.730cc318.css",
+    "static/css/main.d25f5dde.css",
     "static/js/main.904999e8.js"
   ]
 }
