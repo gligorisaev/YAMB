@@ -2,6 +2,20 @@ import React from 'react';
 import './Scorecard.css';
 
 const Scorecard = ({ player, updateScore, toggleManualMark }) => {
+  const [lastTap, setLastTap] = React.useState({});
+
+  const handleDoubleTap = (column, row) => {
+    const now = Date.now();
+    const key = `${column}-${row}`;
+    const lastTapTime = lastTap[key] || 0;
+    
+    if (now - lastTapTime < 300) {
+      // Double tap detected
+      toggleManualMark(player.id, column, row);
+    }
+    
+    setLastTap({ ...lastTap, [key]: now });
+  };
   const columns = [
     { id: 'down', name: 'Down', symbol: '↓' },
     { id: 'updown', name: 'Up/Down', symbol: '↕' },
@@ -200,8 +214,9 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
                         value={getCellValue(col.id, row.id)}
                         onChange={(e) => handleCellChange(col.id, row.id, e.target.value)}
                         onDoubleClick={() => toggleManualMark(player.id, col.id, row.id)}
+                        onTouchEnd={() => handleDoubleTap(col.id, row.id)}
                         className="score-input"
-                        title="Double-click to toggle orange highlight"
+                        title="Double-tap to toggle orange highlight"
                       />
                     ) : (
                       <span className="calculated-value">{getCellValue(col.id, row.id)}</span>
