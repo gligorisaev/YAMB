@@ -40,7 +40,7 @@ thead {
 }
 
 th {
-  padding: 8px 6px;
+  padding: 6px 4px;
   text-align: center;
   font-weight: bold;
   border: 2px solid #764ba2;
@@ -82,7 +82,7 @@ tbody tr:nth-child(odd):hover {
 }
 
 td {
-  padding: 4px;
+  padding: 2px;
   text-align: center;
   border: 1px solid #ddd;
 }
@@ -109,21 +109,22 @@ td {
 }
 
 .input-cell {
-  padding: 2px;
+  padding: 1px;
 }
 
 .score-input {
   width: 100%;
-  padding: 6px 4px;
-  font-size: 16px;
+  padding: 4px 2px;
+  font-size: 15px;
   text-align: center;
   border: 2px solid #ddd;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: all 0.2s;
   background: white;
   -webkit-appearance: none;
   appearance: none;
-  min-height: 36px;
+  min-height: 30px;
+  line-height: 1.2;
 }
 
 .score-input:focus {
@@ -228,7 +229,7 @@ td {
   }
 
   th, td {
-    padding: 4px 2px;
+    padding: 2px 1px;
   }
 
   .column-header {
@@ -241,9 +242,9 @@ td {
   }
 
   .score-input {
-    padding: 6px 2px;
-    font-size: 16px;
-    min-height: 36px;
+    padding: 4px 1px;
+    font-size: 15px;
+    min-height: 30px;
   }
 
   .column-symbol {
