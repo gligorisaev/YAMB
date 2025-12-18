@@ -138,10 +138,6 @@ function App() {
               onClick={() => setActivePlayer(index)}
             >
               {player.name}
-              <span className="remove-player" onClick={(e) => {
-                e.stopPropagation();
-                removePlayer(player.id);
-              }}>×</span>
             </button>
           ))}
         </div>
