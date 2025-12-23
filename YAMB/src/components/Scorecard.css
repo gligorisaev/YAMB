@@ -156,6 +156,16 @@ td {
   font-weight: bold;
 }
 
+.zero-value {
+  background: #ff4444 !important;
+}
+
+.zero-value .score-input {
+  background: #ff4444;
+  color: white;
+  font-weight: bold;
+}
+
 .calculated-value {
   font-size: 18px;
   display: inline-block;

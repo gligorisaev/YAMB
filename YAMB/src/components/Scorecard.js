@@ -168,6 +168,11 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
     return false;
   };
 
+  const isZeroValue = (column, row) => {
+    const value = player.scores[column][row];
+    return value !== null && value !== '' && parseInt(value) === 0;
+  };
+
   const countMaxedCells = () => {
     const allRows = ['1', '2', '3', '4', '5', '6', 'max', 'min', 't20', 's30', 'f40', 'k50', 'y60'];
     const cols = ['down', 'updown', 'up', 'n', 'o', 'r'];
@@ -207,7 +212,7 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
               <tr key={row.id} className={row.id.startsWith('sum') ? 'sum-row' : ''}>
                 <td className="row-label">{row.name}</td>
                 {columns.map(col => (
-                  <td key={`${col.id}-${row.id}`} className={`${row.isInput ? 'input-cell' : 'calculated-cell'} ${isMaxValueReached(col.id, row.id) ? 'max-reached' : ''}`}>
+                  <td key={`${col.id}-${row.id}`} className={`${row.isInput ? 'input-cell' : 'calculated-cell'} ${isMaxValueReached(col.id, row.id) ? 'max-reached' : ''} ${isZeroValue(col.id, row.id) ? 'zero-value' : ''}`}>
                     {row.isInput ? (
                       <input
                         type="number"
