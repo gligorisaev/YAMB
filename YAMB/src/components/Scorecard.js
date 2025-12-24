@@ -139,7 +139,6 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
     // Allow 0 to be displayed
     return (value !== null && value !== '' && value !== undefined) ? value : '';
   };
-  };
 
   const calculateTotal = () => {
     const allRows = ['1', '2', '3', '4', '5', '6', 'sum1', 'max', 'min', 'sum2', 't20', 's30', 'f40', 'k50', 'y60', 'sum3'];
