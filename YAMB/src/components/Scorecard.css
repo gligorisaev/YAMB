@@ -158,12 +158,14 @@ td {
 
 .zero-value {
   background: #ff4444 !important;
+  padding: 1px !important;
 }
 
 .zero-value .score-input {
-  background: #ff4444;
-  color: white;
+  background: #ff4444 !important;
+  color: white !important;
   font-weight: bold;
+  border-color: #cc0000 !important;
 }
 
 .calculated-value {

@@ -1,0 +1,88 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "radio player",
+      "intents": [
+        {
+          "name": "PlayRadioIntent",
+          "slots": [
+            {
+              "name": "station",
+              "type": "RADIO_STATION"
+            }
+          ],
+          "samples": [
+            "play {station}",
+            "play {station} radio",
+            "start {station}",
+            "start playing {station}",
+            "I want to listen to {station}",
+            "tune to {station}",
+            "switch to {station}"
+          ]
+        },
+        {
+          "name": "ListStationsIntent",
+          "slots": [],
+          "samples": [
+            "list stations",
+            "what stations are available",
+            "what can I listen to",
+            "what radio stations do you have",
+            "list available stations"
+          ]
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "name": "RADIO_STATION",
+          "values": [
+            {
+              "name": {
+                "value": "naxi radio"
+              }
+            },
+            {
+              "name": {
+                "value": "naxi ex yu"
+              },
+              "synonyms": [
+                "naxi ex yugoslavia",
+                "naxi ex yu radio"
+              ]
+            },
+            {
+              "name": {
+                "value": "antenne düsseldorf"
+              },
+              "synonyms": [
+                "antenne dusseldorf",
+                "antenne duesseldorf"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

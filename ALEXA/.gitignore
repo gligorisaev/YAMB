@@ -1,0 +1,7 @@
+node_modules/
+.ask/
+lambda/node_modules/
+.vscode/
+.env
+*.log
+.DS_Store

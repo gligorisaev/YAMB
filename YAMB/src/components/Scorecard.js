@@ -170,7 +170,9 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
 
   const isZeroValue = (column, row) => {
     const value = player.scores[column][row];
-    return value !== null && value !== '' && parseInt(value) === 0;
+    if (value === null || value === '') return false;
+    const numValue = typeof value === 'number' ? value : parseInt(value);
+    return numValue === 0;
   };
 
   const countMaxedCells = () => {
