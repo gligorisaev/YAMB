@@ -146,6 +146,11 @@ td {
   color: #0984e3;
 }
 
+.zero-value.calculated-cell {
+  background: #ff4444 !important;
+  color: white !important;
+}
+
 .max-reached {
   background: #ff9800 !important;
 }
@@ -166,6 +171,11 @@ td {
   color: white !important;
   font-weight: bold;
   border-color: #cc0000 !important;
+}
+
+.zero-value .calculated-value {
+  color: white !important;
+  font-weight: bold;
 }
 
 .calculated-value {

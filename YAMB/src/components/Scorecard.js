@@ -136,7 +136,9 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
       return calculateSum3(column);
     }
     const value = player.scores[column][row];
-    return value !== null && value !== '' ? value : '';
+    // Allow 0 to be displayed
+    return (value !== null && value !== '' && value !== undefined) ? value : '';
+  };
   };
 
   const calculateTotal = () => {
@@ -170,9 +172,9 @@ const Scorecard = ({ player, updateScore, toggleManualMark }) => {
 
   const isZeroValue = (column, row) => {
     const value = player.scores[column][row];
-    if (value === null || value === '') return false;
-    const numValue = typeof value === 'number' ? value : parseInt(value);
-    return numValue === 0;
+    if (value === null || value === '' || value === undefined) return false;
+    // Check if value is exactly 0 (works for both number 0 and string "0")
+    return Number(value) === 0;
   };
 
   const countMaxedCells = () => {
